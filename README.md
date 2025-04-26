@@ -1,6 +1,4 @@
-# k8s_doc
-
-Prerequisites
+# Prerequisites
 
 Machines/VMs: At least one control-plane node and one or more worker nodes, each running Linux (Ubuntu 20.04+ recommended).
 
