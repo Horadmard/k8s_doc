@@ -1,6 +1,6 @@
 # Prerequisites
 
-Machines/VMs: At least one control-plane node and one or more worker nodes, each running Linux (Ubuntu 20.04+ recommended).
+Machines/VMs: At least one control-plane node and one or more worker nodes, each running Linux (Ubuntu 22.04+ recommended).
 
 Access: SSH access to all nodes, with a user having sudo privileges.
 
