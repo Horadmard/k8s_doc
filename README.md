@@ -28,9 +28,11 @@ sudo k8s enable network, dns, local-storage
 
 On each worker node, run the kubeadm join command printed by kubeadm init. It looks like this:
 
+```
 sudo kubeadm join <CONTROL_PLANE_IP>:6443 \
   --token abcdef.0123456789abcdef \
   --discovery-token-ca-cert-hash sha256:...
+```
 
 Verify all nodes are Ready:
 
