@@ -20,9 +20,10 @@ sudo k8s bootstrap
 sudo k8s status --wait-ready ## check the cluster status
 ```
 
-# Configure Cluster for hosting app:
+### 1.2 Configure Cluster for hosting app:
 ```
 sudo k8s enable network, dns, local-storage
+
 ```
 
 # Configure kubectl for your user:
