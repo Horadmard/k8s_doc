@@ -22,24 +22,7 @@ sudo k8s status --wait-ready ## check the cluster status
 ### 1.2 Configure Cluster for hosting app:
 ```
 sudo k8s enable network, dns, local-storage
-
 ```
-
-# Configure kubectl for your user:
-```
-mkdir -p $HOME/.kube
-sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-sudo chown $(id -u):$(id -g) $HOME/.kube/config
-```
-
-pod-network-cidr: Adjust for your CNI plugin (e.g., Flannel uses 10.244.0.0/16).
-
-advertise-address: Control-plane’s IP.
-
-### 1.2 Install a CNI Plugin
-
-# Example: Flannel
-kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 
 ### 1.3 Join Worker Nodes
 
