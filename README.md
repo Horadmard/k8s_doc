@@ -90,7 +90,7 @@ Adjust resource requests, environment variables, and any custom configuration se
 
 Download and install the latest Helm version:
 ```
-curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 helm version
 ```
 ### 3.2 Create a Namespace (Optional)
