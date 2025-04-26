@@ -27,7 +27,6 @@ sudo k8s enable network, dns, local-storage
 ### 1.3 Join Worker Nodes
 
 On each worker node, run the kubeadm join command printed by kubeadm init. It looks like this:
-
 ```
 sudo kubeadm join <CONTROL_PLANE_IP>:6443 \
   --token abcdef.0123456789abcdef \
@@ -35,21 +34,24 @@ sudo kubeadm join <CONTROL_PLANE_IP>:6443 \
 ```
 
 Verify all nodes are Ready:
-
+```
 kubectl get nodes
+```
 
 ## 2. Cloning and Configuring Helm Charts
 
 ### 2.1 Clone the Project Repository
 
 # On your local machine or control-plane
-git clone https://github.com/your-org/cba-project.git
-cd cba-project/helm/web-app
+```
+git clone https://git.hyvatech.com/devops/cba.git
+cd cba
+```
 
 If your charts depend on subcharts, update dependencies:
-
+```
 helm dependency update .
-
+```
 ### 2.2 Edit values.yaml
 
 Open the values.yaml file and set values for your environment:
@@ -78,12 +80,13 @@ Download and install the latest Helm version:
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 helm version
 ```
-### 3.2 Create a Namespace (Optional)
 
+### 3.2 Create a Namespace (Optional)
+```
 kubectl create namespace web-app
+```
 
 ### 3.3 Deploy with Helm
-
 ```
 helm install web-app \
   ./helm/web-app \
@@ -98,6 +101,7 @@ helm upgrade web-app \
   --namespace web-app \
   --values ./helm/web-app/values.yaml
 ```
+
 ## 4. Monitoring and Accessing Your Application
 
 ### 4.1 Verify Deployment
@@ -107,9 +111,10 @@ helm upgrade web-app \
 helm list --namespace web-app
 ```
 # Check pods and services:
+```
 kubectl get pods --namespace web-app
 kubectl get svc --namespace web-app
-
+```
 ### 4.2 Inspect Logs and Events
 
 # Logs of a failing pod:
