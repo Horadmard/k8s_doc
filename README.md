@@ -10,9 +10,8 @@ git (to clone the charts repository).
 
 ## 1. Setting Up the Canonical Kubernetes Cluster
 
-### 1.1 Initialize the Control-Plane
+### 1.1 Initialize cluster on the Control-Plane
 
-# On the control-plane node:
 ```
 sudo snap install k8s --classic --channel=1.32-classic/stable
 sudo k8s bootstrap
