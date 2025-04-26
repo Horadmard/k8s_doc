@@ -14,15 +14,21 @@ docker or container runtime (e.g., containerd).
 
 git (to clone the charts repository).
 
-## 1. Setting Up the Kubernetes Cluster
+## 1. Setting Up the Canonical Kubernetes Cluster
 
 ### 1.1 Initialize the Control-Plane
 
 # On the control-plane node:
 ```
-sudo kubeadm init \
-  --pod-network-cidr=10.244.0.0/16 \
-  --apiserver-advertise-address=$(hostname -i)
+sudo snap install k8s --classic --channel=1.32-classic/stable
+sudo k8s bootstrap
+# sudo k8s bootstrap --help ## for custom configurations
+sudo k8s status --wait-ready ## check the cluster status
+```
+
+# Configure Cluster for hosting app:
+```
+sudo k8s enable network, dns, local-storage
 ```
 
 # Configure kubectl for your user:
