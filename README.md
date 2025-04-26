@@ -6,12 +6,6 @@ Access: SSH access to all nodes, with a user having sudo privileges.
 
 Network: Ensure all nodes can communicate over required ports (e.g., 6443, 2379–2380, 10250, 10251, 10252).
 
-Tools on control-plane:
-
-kubeadm, kubelet, and kubectl installed (matching versions).
-
-docker or container runtime (e.g., containerd).
-
 git (to clone the charts repository).
 
 ## 1. Setting Up the Canonical Kubernetes Cluster
