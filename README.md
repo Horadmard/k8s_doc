@@ -2,11 +2,11 @@
 
 ## Prerequisites
 
-Machines/VMs: At least one control-plane node and one or more worker nodes, each running Linux (Ubuntu 22.04+ recommended).
+`Machines/VMs:` At least one control-plane node and one or more worker nodes, each running Linux (Ubuntu 22.04+ recommended).
 
-Access: SSH access to all nodes with a user having sudo privileges.
+`Access:` SSH access to all nodes with a user having sudo privileges.
 
-Network: Ensure all nodes can communicate over required ports (e.g., 6443, 2379–2380, 10250, 10251, 10252).
+`Network:` Ensure all nodes can communicate over required ports (e.g., 6443, 2379–2380, 10250, 10251, 10252).
 
 ### 1. Setting Up the Kubernetes Cluster
 
@@ -19,7 +19,7 @@ sudo k8s status --wait-ready  # Check cluster status
 ```
 #### 1.2 Configure the Cluster
 
-Enable networking (Cilium), CoreDNS, and local storage (EBS):
+Enable networking (`Cilium`), CoreDNS, and local storage (`EBS`):
 ```
 sudo k8s enable network dns local-storage
 # sudo k8s set local-storage.local-path=/path/to/new/folder   # Specify local storage path
@@ -76,7 +76,7 @@ nodeSelector: {}
 tolerations: []
 affinity: {}
 ```
-Adjust values such as replicaCount, image.repository, service.type, and other fields according to your deployment needs.
+Adjust values such as `replicaCount`, `image.repository`, `service.type`, and other fields according to your deployment needs.
 
 ### 3. Installing Helm and Deploying the Web App
 
@@ -123,8 +123,9 @@ kubectl get svc --namespace web-app
 #### 4.2 Inspect Logs and Events
 
 ## Logs of a specific pod:
+```
 kubectl logs web-app-abc123 -n web-app
-
+```
 ## Describe resources to view events:
 ```
 kubectl describe pod web-app-abc123 -n web-app
@@ -145,9 +146,9 @@ kubectl get svc -n web-app | grep LoadBalancer
 #### 4.5 Monitoring with Lens
 
 Lens offers a powerful graphical interface for Kubernetes cluster monitoring and management. To integrate Lens into your workflow:
-
-Download & InstallVisit the Lens website and download the package for your operating system (Windows, macOS, or Linux).
-
+```
+https://k8slens.dev/download
+```
 Add Your Cluster
 
 Open Lens and click + Add Cluster.
