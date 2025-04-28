@@ -126,14 +126,14 @@ kubectl describe pod web-app-abc123 -n web-app
 4.3 Port-Forwarding (Local Testing)
 
 kubectl port-forward svc/web-app 8080:80 -n web-app
-# Then open http://localhost:8080 in your browser
+## Then open http://localhost:8080 in your browser
 
 4.4 Using an Ingress or LoadBalancer
 
 If you enabled an Ingress controller or LoadBalancer, point your DNS or access the external IP:
 
 kubectl get ingress -n web-app
-# or
+## or
 kubectl get svc -n web-app | grep LoadBalancer
 
 Additional Considerations
