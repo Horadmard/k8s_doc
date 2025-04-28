@@ -34,7 +34,7 @@ On each worker node:
 ```
 sudo k8s join-cluster <join-token>
 ```
-#### 1.4 Alias and Auto-Completion (Optional)
+### 1.4 Alias and Auto-Completion (Optional)
 
 Add the following to simplify commands:
 ```
@@ -111,11 +111,11 @@ helm upgrade web-app \
 
 #### 4.1 Verify Deployment
 
-# Check Helm releases:
+## Check Helm releases:
 ```
 helm list --namespace web-app
 ```
-# Check pods and services:
+## Check pods and services:
 ```
 kubectl get pods --namespace web-app
 kubectl get svc --namespace web-app
