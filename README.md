@@ -1,123 +1,126 @@
-# Prerequisites
+CBA Web App Deployment with Helm and Kubernetes
+
+Prerequisites
 
 Machines/VMs: At least one control-plane node and one or more worker nodes, each running Linux (Ubuntu 22.04+ recommended).
 
-Access: SSH access to all nodes, with a user having sudo privileges.
+Access: SSH access to all nodes with a user having sudo privileges.
 
 Network: Ensure all nodes can communicate over required ports (e.g., 6443, 2379–2380, 10250, 10251, 10252).
 
-git (to clone the charts repository).
+1. Setting Up the Kubernetes Cluster
 
-## 1. Setting Up the Canonical Kubernetes Cluster
+1.1 Initialize the Control-Plane
 
-### 1.1 Initialize cluster on the Control-Plane
-
-```
 sudo snap install k8s --classic --channel=1.32-classic/stable
 sudo k8s bootstrap
-# sudo k8s bootstrap --help ## for custom configurations
-sudo k8s status --wait-ready ## check the cluster status
-```
+# sudo k8s bootstrap --help   # For custom configurations
+sudo k8s status --wait-ready  # Check cluster status
 
-### 1.2 Configure Cluster for hosting app:
-```
-sudo k8s enable network, dns, local-storage
-```
+1.2 Configure the Cluster
 
-### 1.3 Join Worker Nodes
+Enable networking (Cilium), CoreDNS, and local storage (EBS):
 
-On each worker node, run the kubeadm join command printed by kubeadm init. It looks like this:
-```
-sudo kubeadm join <CONTROL_PLANE_IP>:6443 \
-  --token abcdef.0123456789abcdef \
-  --discovery-token-ca-cert-hash sha256:...
-```
+sudo k8s enable network dns local-storage
+# sudo k8s set local-storage.local-path=/path/to/new/folder   # Specify local storage path
 
-Verify all nodes are Ready:
-```
-kubectl get nodes
-```
+1.3 Join Worker Nodes
 
-## 2. Cloning and Configuring Helm Charts
+On the control-plane node:
 
-### 2.1 Clone the Project Repository
+sudo k8s get-join-token worker --worker
 
-# On your local machine or control-plane
-```
+On each worker node:
+
+sudo k8s join-cluster <join-token>
+
+1.4 Alias and Auto-Completion (Optional)
+
+Add the following to simplify commands:
+
+alias k='sudo k8s kubectl'
+echo "source <(kubectl completion bash)" >> ~/.bashrc
+source ~/.bashrc
+
+2. Cloning and Configuring Helm Charts
+
+2.1 Clone the Project Repository
+
 git clone https://git.hyvatech.com/devops/cba.git
 cd cba
-```
+
+2.2 Edit values.yaml
+
+Customize the values.yaml file based on the following structure:
+
+replicaCount: 1
+image:
+  repository: cba
+  pullPolicy: IfNotPresent
+  tag: ""
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+podAnnotations: {}
+podSecurityContext: {}
+securityContext: {}
+service:
+  type: ClusterIP
+  port: 80
+resources: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+Adjust values such as replicaCount, image.repository, service.type, and other fields according to your deployment needs.
+
+3. Installing Helm and Deploying the Web App
+
+3.1 Install the Helm CLI
+
+curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+helm version
+
+3.2 Create a Namespace (Optional)
+
+sudo k8s kubectl create namespace web-app
 
 If your charts depend on subcharts, update dependencies:
-```
+
 helm dependency update .
-```
-### 2.2 Edit values.yaml
 
-Open the values.yaml file and set values for your environment:
+3.3 Deploy the Application with Helm
 
-```
-replicaCount: 3
-image:
-  repository: your-registry/web-app
-  tag: v1.2.3
-service:
-  type: LoadBalancer
-  port: 80
-ingress:
-  enabled: true
-  host: webapp.example.com
-```
-
-Adjust resource requests, environment variables, and any custom configuration sections as needed.
-
-## 3. Installing Helm and Deploying the Web App
-
-### 3.1 Install Helm CLI
-
-Download and install the latest Helm version:
-```
-curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-helm version
-```
-
-### 3.2 Create a Namespace (Optional)
-```
-kubectl create namespace web-app
-```
-
-### 3.3 Deploy with Helm
-```
 helm install web-app \
   ./helm/web-app \
   --namespace web-app \
   --values ./helm/web-app/values.yaml
-```
 
-To upgrade after changes:
-```
+To upgrade after making changes:
+
 helm upgrade web-app \
   ./helm/web-app \
   --namespace web-app \
   --values ./helm/web-app/values.yaml
-```
 
-## 4. Monitoring and Accessing Your Application
+4. Monitoring and Accessing Your Application
 
-### 4.1 Verify Deployment
+4.1 Verify Deployment
 
 # Check Helm releases:
-```
 helm list --namespace web-app
-```
+
 # Check pods and services:
-```
 kubectl get pods --namespace web-app
 kubectl get svc --namespace web-app
-```
-### 4.2 Inspect Logs and Events
 
-# Logs of a failing pod:
+4.2 Inspect Logs and Events
+
+# Logs of a specific pod:
 kubectl logs web-app-abc123 -n web-app
 
 # Describe resources to view events:
@@ -128,21 +131,34 @@ kubectl describe pod web-app-abc123 -n web-app
 kubectl port-forward svc/web-app 8080:80 -n web-app
 # Then open http://localhost:8080 in your browser
 
-4.4 Using an Ingress or LoadBalancer
+4.4 Accessing via Ingress or LoadBalancer
 
-If you enabled an Ingress controller or LoadBalancer, point your DNS or access the external IP:
+If you enabled an Ingress controller or LoadBalancer, retrieve the endpoint:
 
 kubectl get ingress -n web-app
 # or
 kubectl get svc -n web-app | grep LoadBalancer
 
-Additional Considerations
+4.5 Monitoring with Lens
 
-TLS/SSL: Integrate Cert-Manager for automatic TLS certificates.
+Lens offers a powerful graphical interface for Kubernetes cluster monitoring and management. To integrate Lens into your workflow:
 
-RBAC: Create service accounts and restrict permissions in production.
+Download & InstallVisit the Lens website and download the package for your operating system (Windows, macOS, or Linux).
 
-CI/CD: Automate Helm chart linting (helm lint) and deployment via pipelines.
+Add Your Cluster
 
-Helm Tests: Define tests in templates/tests/ and run helm test web-app.
+Open Lens and click + Add Cluster.
 
+Choose Custom KubeConfig or Select from existing contexts.
+
+Point Lens to your $HOME/.kube/config file or specify the context used for the web-app namespace.
+
+Explore ResourcesNavigate through Namespaces, Nodes, Workloads (Deployments, DaemonSets, StatefulSets), Services, ConfigMaps, and more. Lens provides live status updates and resource counts.
+
+View MetricsLens utilizes the Kubernetes Metrics Server to show CPU and memory charts. Click on a Node or Pod to view resource utilization over time.
+
+Inspect LogsStream real-time Pod logs, filter outputs, and troubleshoot faster directly within Lens.
+
+Terminal AccessUse the built-in terminal to run commands or kubectl exec into any Pod without switching to your CLI.
+
+Lens significantly streamlines Kubernetes cluster management through visualizations and intuitive tooling.
