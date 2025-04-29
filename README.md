@@ -39,7 +39,7 @@ sudo k8s join-cluster <join-token>
 Add the following to simplify commands:
 ```
 alias k='sudo k8s kubectl'
-echo "source <(kubectl completion bash)" >> ~/.bashrc
+echo "source <(sudo k8s kubectl completion bash)" >> ~/.bashrc
 source ~/.bashrc
 ```
 ### 2. Cloning and Configuring Helm Charts
