@@ -146,3 +146,7 @@ CI/CD: Automate Helm chart linting (helm lint) and deployment via pipelines.
 
 Helm Tests: Define tests in templates/tests/ and run helm test web-app.
 
+
+
+https://docs.google.com/document/d/1EokzSQ9IMUeqGYdTG5KrWlp_XVgXc2xd1yAeZ70Ksqc/edit?usp=sharing
+https://learn.microsoft.com/en-us/azure/devops/boards/?view=azure-devops
