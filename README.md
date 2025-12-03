@@ -1,3 +1,4 @@
+
 # Prerequisites
 
 Machines/VMs: At least one control-plane node and one or more worker nodes, each running Linux (Ubuntu 22.04+ recommended).
@@ -150,3 +151,4 @@ Helm Tests: Define tests in templates/tests/ and run helm test web-app.
 
 https://docs.google.com/document/d/1EokzSQ9IMUeqGYdTG5KrWlp_XVgXc2xd1yAeZ70Ksqc/edit?usp=sharing
 https://learn.microsoft.com/en-us/azure/devops/boards/?view=azure-devops
+https://drive.google.com/file/d/1xepQ1n6ob5amZKyY7UPrj-CLzO_Ur65Y/view?usp=sharing
